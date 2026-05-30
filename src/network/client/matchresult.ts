@@ -46,6 +46,25 @@ export class MatchResultHelper {
 
     const result = this.createMatchResult(rulename, session, amIWinner)
 
+    // ANT1GRAVITY: broadcast the winner up to the parent window so the casino
+    // can credit the pot to the winner's account.
+    try {
+      if (typeof window !== "undefined" && window.parent && window.parent !== window) {
+        window.parent.postMessage(
+          {
+            type: "ant1g-pool-result",
+            winner: result.winner,
+            loser: result.loser || null,
+            ruleType: result.ruleType,
+            tableId: new URLSearchParams(window.location.search).get("tableId"),
+          },
+          "*"
+        )
+      }
+    } catch (_) {
+      /* postMessage failure shouldn't break the game */
+    }
+
     return new End(container, result)
   }
 
