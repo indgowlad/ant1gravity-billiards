@@ -24,7 +24,8 @@ export class Camera {
   update(elapsed, aim: AimEvent) {
     this.elapsed = elapsed
     this.t += elapsed
-    this.mode(aim)
+    // ANT1GRAVITY: force top-down view always
+    this.topView(aim)
   }
 
   orbitView(_: AimEvent) {
