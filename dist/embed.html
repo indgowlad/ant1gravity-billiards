@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta
       name="description"
-      content="Embed this free billiards pool game on your website. Lightweight, open source, and embeddable billiards simulation with realistic physics."
+      content="ANT1GRAVITY billiards — embedded pool game with realistic physics, top-down view, 8-ball mode."
     />
     <meta name="robots" content="index,follow" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -16,33 +16,12 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
     />
-    <link
-      rel="canonical"
-      href="https://tailuge.github.io/billiards/dist/embed.html"
-    />
-    <meta
-      property="og:title"
-      content="Billiards Embed - Free Pool Game Widget"
-    />
-    <meta
-      property="og:description"
-      content="Embed this free billiards pool game on your website. Lightweight, open source, and embeddable billiards simulation."
-    />
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:url"
-      content="https://tailuge.github.io/billiards/dist/embed.html"
-    />
-    <meta name="twitter:card" content="summary" />
-    <meta
-      name="twitter:title"
-      content="Billiards Embed - Free Pool Game Widget"
-    />
-    <meta
-      name="twitter:description"
-      content="Embed this free billiards pool game on your website. Open source and lightweight."
-    />
+    <link rel="stylesheet" type="text/css" href="css/fonts.css" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="css/aiminputs.css" />
+    <link rel="stylesheet" type="text/css" href="css/powerinput.css" />
+    <link rel="stylesheet" type="text/css" href="css/notification.css" />
+    <link rel="stylesheet" type="text/css" href="css/wood.css" />
   </head>
 
   <body>
@@ -55,6 +34,64 @@
         </div>
       </div>
     </div>
+
+    <!-- Control panel: hit button, cue ball hit point, power slider -->
+    <div id="panel" class="panel wood-texture">
+      <div class="aimControlColumn">
+        <div class="aimingArea">
+          <button
+            class="hitButton timeout-btn"
+            id="cueHit"
+            type="button"
+            aria-label="Hit cue ball"
+          >
+            hit
+          </button>
+        </div>
+        <div id="tiltSliderContainer" class="tiltSliderContainer" hidden>
+          <angle-input id="cueTilt" aria-label="tilt angle"></angle-input>
+        </div>
+        <template id="angle-input-template">
+          <div class="area" id="area">
+            <div class="ball"></div>
+            <div class="rotator" id="rot">
+              <div class="stick">
+                <div class="tip"></div>
+                <div class="ferrule"></div>
+                <div class="shaft"></div>
+                <div class="butt"></div>
+              </div>
+            </div>
+          </div>
+        </template>
+        <div id="ballContainerWrapper" class="ballContainerWrapper">
+          <button id="openElevation" class="openElevation">+</button>
+          <div id="ballContainer" class="ballContainer">
+            <div id="objectBall" class="objectBall"></div>
+            <div id="cueBall" class="cueBall">
+              <div id="cueTip" class="cueTip"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="powerSliderContainer" class="powerSliderContainer">
+        <div class="power-track"></div>
+        <input
+          class="powerSlider"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.75"
+          id="cuePower"
+          aria-label="power slider"
+        />
+      </div>
+    </div>
+
+    <!-- Notifications (toast messages from the game) -->
+    <div id="notification" class="notification" hidden></div>
+
     <script defer src="three_core.js"></script>
     <script defer src="three_module.js"></script>
     <script defer src="three_examples.js"></script>

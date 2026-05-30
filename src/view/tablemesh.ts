@@ -3,7 +3,10 @@ import {
   Mesh,
   CylinderGeometry,
   BoxGeometry,
+  PlaneGeometry,
   MeshPhongMaterial,
+  MeshBasicMaterial,
+  CanvasTexture,
   PointLight,
   Group,
 } from "three"
@@ -25,6 +28,7 @@ export class TableMesh {
     light.position.set(0, 0, R * 50)
     group.add(light)
     this.addCushions(group, hasPockets)
+    this.addAnt1GravityLogo(group)
 
     if (hasPockets) {
       PocketGeometry.knuckles.forEach((k) => this.knuckleCylinder(k, group))
@@ -40,6 +44,34 @@ export class TableMesh {
       )
     }
     return group
+  }
+
+  // ANT1GRAVITY watermark — text rendered on the felt
+  private addAnt1GravityLogo(group: Group) {
+    const canvas = document.createElement("canvas")
+    canvas.width = 2048
+    canvas.height = 512
+    const ctx = canvas.getContext("2d")!
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.font = "900 220px 'Arial Black', Arial, sans-serif"
+    ctx.textAlign = "center"
+    ctx.textBaseline = "middle"
+    ctx.fillStyle = "rgba(255,255,255,0.14)"
+    ctx.fillText("ANT1GRAVITY", canvas.width / 2, canvas.height / 2)
+
+    const texture = new CanvasTexture(canvas)
+    texture.anisotropy = 8
+    const material = new MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      depthWrite: false,
+    })
+    // Logo dimensions: ~50R wide × 12R tall, centered on the felt
+    const geometry = new PlaneGeometry(R * 50, R * 12)
+    const mesh = new Mesh(geometry, material)
+    // Just above the cloth top (z=-R) so it floats on the felt surface
+    mesh.position.set(0, 0, -R + 0.02)
+    group.add(mesh)
   }
 
   private readonly cloth = new MeshPhongMaterial({
